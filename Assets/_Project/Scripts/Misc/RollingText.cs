@@ -14,10 +14,9 @@ public class RollingText : MonoBehaviour
         _textComponent = GetComponent<TMP_Text>();
     }
 
-
-    void Start()
+    private void Update()
     {
-        StartCoroutine(AnimateVertexColors());
+        if(Input.GetKeyUp(KeyCode.Space)) StartCoroutine(AnimateVertexColors());
     }
 
     IEnumerator AnimateVertexColors()
@@ -41,7 +40,7 @@ public class RollingText : MonoBehaviour
             SetAlpha(textInfo, i, 255);
             _textComponent.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
 
-            yield return new WaitForSeconds(RolloverCharacterSpeed);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
