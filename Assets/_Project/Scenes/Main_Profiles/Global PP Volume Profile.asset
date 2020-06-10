@@ -98,15 +98,15 @@ MonoBehaviour:
     overrideState: 1
     value: 1
   gradingMode:
-    overrideState: 0
-    value: 1
+    overrideState: 1
+    value: 2
   externalLut:
-    overrideState: 0
-    value: {fileID: 0}
+    overrideState: 1
+    value: {fileID: 11700000, guid: 7427bc6e8f68c5d4e8943206e2aab6eb, type: 2}
     defaultState: 1
   tonemapper:
-    overrideState: 0
-    value: 0
+    overrideState: 1
+    value: 2
   toneCurveToeStrength:
     overrideState: 0
     value: 0
@@ -184,11 +184,11 @@ MonoBehaviour:
     overrideState: 0
     value: 100
   lift:
-    overrideState: 0
-    value: {x: 1, y: 0.951964, z: 0.903708, w: 0}
+    overrideState: 1
+    value: {x: 0.84447956, y: 0.84823495, z: 1, w: 0}
   gamma:
     overrideState: 0
-    value: {x: 0.97318, y: 0.8264909, z: 1, w: 0}
+    value: {x: 1, y: 0.9230505, z: 0.9859494, w: 0.5497383}
   gain:
     overrideState: 0
     value: {x: 0.8203728, y: 1, z: 0.7955467, w: 0}
