@@ -10,8 +10,21 @@ namespace PixelCurio.AlteredTimeline
 
         public override void InstallBindings()
         {
+            InstallManagers();
+            InstallCharacters();
             InstallFactories();
             InstallViewControllers();
+        }
+
+        private void InstallManagers()
+        {
+            Container.BindInterfacesAndSelfTo<CharacterManager>().AsSingle();
+        }
+
+        private void InstallCharacters()
+        {
+            Container.BindInterfacesAndSelfTo<Knight>().AsSingle();
+            Container.Bind<IAction>().To<Attack>().AsCached().WhenInjectedInto<Knight>();
         }
 
         private void InstallViewControllers()

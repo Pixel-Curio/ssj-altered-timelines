@@ -1,16 +1,21 @@
-﻿using Zenject;
+﻿using System;
+using Zenject;
 
 namespace PixelCurio.AlteredTimeline
 {
     public class CommandsViewController : IInitializable
     {
+        [Inject] private readonly CharacterManager _characterManager;
         [Inject] private readonly PlaceholderFactory<CommandView> _commandFactory;
 
         public void Initialize()
         {
-            var _commandView = _commandFactory.Create();
-            _commandView.Name.text = "THIS IS A TEST";
-            _commandView.Cursor.enabled = false;
+            foreach (IAction action in _characterManager.ActiveCharacter.Actions)
+            {
+                var commandView = _commandFactory.Create();
+                commandView.Name.text = action.Name;
+                commandView.Cursor.enabled = false;
+            }
         }
     }
 }
