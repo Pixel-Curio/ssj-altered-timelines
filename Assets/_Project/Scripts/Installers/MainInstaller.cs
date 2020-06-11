@@ -23,8 +23,12 @@ namespace PixelCurio.AlteredTimeline
 
         private void InstallCharacters()
         {
+            #region Install Knight
             Container.BindInterfacesAndSelfTo<Knight>().AsSingle();
             Container.Bind<IAction>().To<Attack>().AsCached().WhenInjectedInto<Knight>();
+            Container.Bind<IAction>().To<Defend>().AsCached().WhenInjectedInto<Knight>();
+            Container.Bind<IAction>().To<Item>().AsCached().WhenInjectedInto<Knight>();
+            #endregion
         }
 
         private void InstallViewControllers()

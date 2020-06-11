@@ -4,6 +4,6 @@
     {
         string Name { get; }
         int ManaCost { get; }
-        void ApplyDamage(ICharacter target);
+        void ApplyEffect(ICharacter target);
     }
 }
