@@ -12,6 +12,7 @@ namespace PixelCurio.AlteredTimeline
         {
             InstallManagers();
             InstallCharacters();
+            InstallMagic();
             InstallFactories();
             InstallViewControllers();
         }
@@ -27,8 +28,14 @@ namespace PixelCurio.AlteredTimeline
             Container.BindInterfacesAndSelfTo<Knight>().AsSingle();
             Container.Bind<IAction>().To<Attack>().AsCached().WhenInjectedInto<Knight>();
             Container.Bind<IAction>().To<Defend>().AsCached().WhenInjectedInto<Knight>();
+            Container.Bind<IAction>().To<Magic>().AsCached().WhenInjectedInto<Knight>();
             Container.Bind<IAction>().To<Item>().AsCached().WhenInjectedInto<Knight>();
             #endregion
+        }
+
+        private void InstallMagic()
+        {
+            Container.Bind<IAction>().To<Fireball>().AsCached().WhenInjectedInto<Magic>();
         }
 
         private void InstallViewControllers()

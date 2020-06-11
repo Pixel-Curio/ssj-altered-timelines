@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Zenject;
 
 namespace PixelCurio.AlteredTimeline
 {
-    public class CommandsViewController : IInitializable
+    public class CommandsViewController : IInitializable, ITickable
     {
         [Inject] private readonly CharacterManager _characterManager;
         [Inject] private readonly PlaceholderFactory<CommandView> _commandFactory;
@@ -21,6 +22,8 @@ namespace PixelCurio.AlteredTimeline
                 CommandView commandView = _commandFactory.Create();
                 commandView.Name.text = action.Name;
                 commandView.Cursor.enabled = false;
+
+                if (action.SubActions.Count > 0) Debug.Log(action.SubActions[0].Name);
 
                 _actions.Add((commandView, action));
             }
@@ -43,6 +46,11 @@ namespace PixelCurio.AlteredTimeline
         }
 
         private static void SetSelected(CommandView view, bool isSelected) => view.Cursor.enabled = isSelected;
-        
+
+        public void Tick()
+        {
+            if (Input.GetKeyDown(KeyCode.DownArrow)) SelectNext();
+            if (Input.GetKeyDown(KeyCode.UpArrow)) SelectPrevious();
+        }
     }
 }
