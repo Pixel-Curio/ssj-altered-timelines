@@ -35,8 +35,9 @@ namespace PixelCurio.AlteredTimeline
 
                 CommandPanelView subCommandPanel = _commandPanelFactory.Create();
                 subCommandPanel.transform.SetParent(_view.CommandPlatesTransform, false);
-                commandView.ChildPanel = subCommandPanel;
                 subCommandPanel.ParentPanel = commandPanelView;
+                subCommandPanel.SetPanelVisibility(false);
+                commandView.ChildPanel = subCommandPanel;
 
                 foreach (IAction subAction in action.SubActions)
                 {
@@ -64,13 +65,18 @@ namespace PixelCurio.AlteredTimeline
             if(_activePanelView.GetActiveAction() == null) throw new WarningException("Select command was hit before an item has been selected.");
             if (_activePanelView.GetActiveAction().ChildPanel == null) return; //TODO: Replace this with command action;
             _activePanelView = _activePanelView.GetActiveAction().ChildPanel;
+            _activePanelView.SetPanelVisibility(true);
+            _activePanelView.ParentPanel.ClearSelection();
             if (_activePanelView.GetActiveAction() == null) _activePanelView.SelectNext(); //Make sure we select the first item if nothing has been selected yet.
         }
 
         private void BackCommand()
         {
             if (_activePanelView.ParentPanel == null) return; //Already at root;
+            _activePanelView.ClearSelection();
+            _activePanelView.SetPanelVisibility(false);
             _activePanelView = _activePanelView.ParentPanel;
+            _activePanelView.SelectNext();
         }
 
         private async Task DelayedSelect()
