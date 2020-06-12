@@ -5,8 +5,8 @@ namespace PixelCurio.AlteredTimeline
 {
     public class MainInstaller : MonoInstaller
     {
-        public Transform CommandTransform;
         public GameObject CommandViewPrefab;
+        public GameObject CommandPanelViewPrefab;
 
         public override void InstallBindings()
         {
@@ -36,6 +36,7 @@ namespace PixelCurio.AlteredTimeline
         private void InstallMagic()
         {
             Container.Bind<IAction>().To<Fireball>().AsCached().WhenInjectedInto<Magic>();
+            Container.Bind<IAction>().To<IceBall>().AsCached().WhenInjectedInto<Magic>();
         }
 
         private void InstallViewControllers()
@@ -46,7 +47,9 @@ namespace PixelCurio.AlteredTimeline
         private void InstallFactories()
         {
             Container.BindFactory<CommandView, PlaceholderFactory<CommandView>>()
-                .FromComponentInNewPrefab(CommandViewPrefab).UnderTransform(CommandTransform);
+                .FromComponentInNewPrefab(CommandViewPrefab);
+            Container.BindFactory<CommandPanelView, PlaceholderFactory<CommandPanelView>>()
+                .FromComponentInNewPrefab(CommandPanelViewPrefab);
         }
     }
 }
