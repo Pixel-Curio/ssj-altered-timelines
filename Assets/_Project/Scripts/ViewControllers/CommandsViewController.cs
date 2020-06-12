@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
 
@@ -18,11 +19,11 @@ namespace PixelCurio.AlteredTimeline
 
         public void Initialize()
         {
-            CommandPanelView commandPanelView = _commandPanelFactory.Create();
-            commandPanelView.transform.SetParent(_view.CommandPlatesTransform, false);
+            CommandPanelView commandPanelView = CreatePanel();
 
             _activePanelView = commandPanelView;
 
+            //Register root actions
             foreach (IAction action in _characterManager.ActiveCharacter.Actions)
             {
                 CommandView commandView = _commandFactory.Create();
@@ -31,12 +32,10 @@ namespace PixelCurio.AlteredTimeline
                 commandView.Action = action;
                 commandPanelView.SetChildCommand(commandView);
 
+                //Register sub actions (eg magic, items, etc)
                 if (action.SubActions == null || action.SubActions.Count == 0) continue;
 
-                CommandPanelView subCommandPanel = _commandPanelFactory.Create();
-                subCommandPanel.transform.SetParent(_view.CommandPlatesTransform, false);
-                subCommandPanel.ParentPanel = commandPanelView;
-                subCommandPanel.SetPanelVisibility(false);
+                CommandPanelView subCommandPanel = CreatePanel(commandPanelView);
                 commandView.ChildPanel = subCommandPanel;
 
                 foreach (IAction subAction in action.SubActions)
@@ -62,7 +61,7 @@ namespace PixelCurio.AlteredTimeline
 
         private void SelectCommand()
         {
-            if(_activePanelView.GetActiveAction() == null) throw new WarningException("Select command was hit before an item has been selected.");
+            if (_activePanelView.GetActiveAction() == null) throw new WarningException("Select command was hit before an item has been selected.");
             if (_activePanelView.GetActiveAction().ChildPanel == null) return; //TODO: Replace this with command action;
             _activePanelView = _activePanelView.GetActiveAction().ChildPanel;
             _activePanelView.SetPanelVisibility(true);
@@ -77,6 +76,19 @@ namespace PixelCurio.AlteredTimeline
             _activePanelView.SetPanelVisibility(false);
             _activePanelView = _activePanelView.ParentPanel;
             _activePanelView.SelectNext();
+        }
+
+        private CommandPanelView CreatePanel(CommandPanelView parentPanel = null)
+        {
+            CommandPanelView panelView = _commandPanelFactory.Create();
+            panelView.transform.SetParent(_view.CommandPlatesTransform, false);
+
+            if (parentPanel == null) return panelView;
+
+            panelView.ParentPanel = parentPanel;
+            panelView.SetPanelVisibility(false);
+
+            return panelView;
         }
 
         private async Task DelayedSelect()
