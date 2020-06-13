@@ -10,6 +10,8 @@ namespace PixelCurio.AlteredTimeline
         public GameObject CommandsViewPrefab;
         public GameObject CommandPanelViewPrefab;
         public GameObject CommandViewPrefab;
+        [Space(10)]
+        public GameObject StatusViewPrefab;
 
         public override void InstallBindings()
         {
@@ -46,6 +48,7 @@ namespace PixelCurio.AlteredTimeline
         private void InstallViewControllers()
         {
             Container.BindInterfacesAndSelfTo<CommandsViewController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<StatusesViewController>().AsSingle().NonLazy();
         }
         private void InstallViews()
         {
@@ -60,6 +63,9 @@ namespace PixelCurio.AlteredTimeline
                 .FromComponentInNewPrefab(CommandViewPrefab);
             Container.BindFactory<CommandPanelView, PlaceholderFactory<CommandPanelView>>()
                 .FromComponentInNewPrefab(CommandPanelViewPrefab);
+
+            Container.BindFactory<StatusView, PlaceholderFactory<StatusView>>()
+                .FromComponentInNewPrefab(StatusViewPrefab);
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
 
@@ -53,8 +50,8 @@ namespace PixelCurio.AlteredTimeline
 
         public void Tick()
         {
-            if (Input.GetKeyDown(KeyCode.Return)) SelectCommand();
-            if (Input.GetKeyDown(KeyCode.Escape)) BackCommand();
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.RightArrow)) SelectCommand();
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.LeftArrow)) BackCommand();
             if (Input.GetKeyDown(KeyCode.DownArrow)) _activePanelView.SelectNext();
             if (Input.GetKeyDown(KeyCode.UpArrow)) _activePanelView.SelectPrevious();
         }
