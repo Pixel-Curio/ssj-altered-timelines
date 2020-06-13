@@ -26,6 +26,7 @@ namespace PixelCurio.AlteredTimeline
         private void InstallManagers()
         {
             Container.BindInterfacesAndSelfTo<CharacterManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<InputManager>().AsSingle();
         }
 
         private void InstallCharacters()

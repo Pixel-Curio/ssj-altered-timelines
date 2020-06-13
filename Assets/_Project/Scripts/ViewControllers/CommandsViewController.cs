@@ -5,10 +5,12 @@ using Zenject;
 
 namespace PixelCurio.AlteredTimeline
 {
-    public class CommandsViewController : IInitializable, ITickable
+    public class CommandsViewController : IInitializable
     {
         [Inject] private readonly CommandsView _view;
         [Inject] private readonly CharacterManager _characterManager;
+        [Inject] private readonly InputManager _inputManager;
+        [Inject] private readonly StatusesViewController _statusesViewController;
         [Inject] private readonly PlaceholderFactory<CommandView> _commandFactory;
         [Inject] private readonly PlaceholderFactory<CommandPanelView> _commandPanelFactory;
 
@@ -48,13 +50,13 @@ namespace PixelCurio.AlteredTimeline
             _ = DelayedSelect();
         }
 
-        public void Tick()
-        {
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.RightArrow)) SelectCommand();
-            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.LeftArrow)) BackCommand();
-            if (Input.GetKeyDown(KeyCode.DownArrow)) _activePanelView.SelectNext();
-            if (Input.GetKeyDown(KeyCode.UpArrow)) _activePanelView.SelectPrevious();
-        }
+        //public void Tick()
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.RightArrow)) SelectCommand();
+        //    if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.LeftArrow)) BackCommand();
+        //    if (Input.GetKeyDown(KeyCode.DownArrow)) _activePanelView.SelectNext();
+        //    if (Input.GetKeyDown(KeyCode.UpArrow)) _activePanelView.SelectPrevious();
+        //}
 
         private void SelectCommand()
         {
@@ -75,6 +77,10 @@ namespace PixelCurio.AlteredTimeline
             _activePanelView.SelectNext();
         }
 
+        private void NextCommand() => _activePanelView.SelectNext();
+
+        private void PreviousCommand() => _activePanelView.SelectPrevious();
+
         private CommandPanelView CreatePanel(CommandPanelView parentPanel = null)
         {
             CommandPanelView panelView = _commandPanelFactory.Create();
@@ -88,10 +94,31 @@ namespace PixelCurio.AlteredTimeline
             return panelView;
         }
 
+        private void Activate()
+        {
+            _inputManager.OnRight += SelectCommand;
+            _inputManager.OnEnter += SelectCommand;
+            _inputManager.OnLeft += BackCommand;
+            _inputManager.OnBack += BackCommand;
+            _inputManager.OnDown += NextCommand;
+            _inputManager.OnUp += PreviousCommand;
+        }
+
+        private void Deactivate()
+        {
+            _inputManager.OnRight -= SelectCommand;
+            _inputManager.OnEnter -= SelectCommand;
+            _inputManager.OnLeft -= BackCommand;
+            _inputManager.OnBack -= BackCommand;
+            _inputManager.OnDown -= NextCommand;
+            _inputManager.OnUp -= PreviousCommand;
+        }
+
         private async Task DelayedSelect()
         {
             await Task.Delay(500);
             _activePanelView.SelectNext();
+            Activate();
         }
     }
 }
