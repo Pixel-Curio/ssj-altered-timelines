@@ -13,6 +13,7 @@ namespace PixelCurio.AlteredTimeline
 
         private List<StatusView> _rightStatuses = new List<StatusView>();
         private List<StatusView> _leftStatuses = new List<StatusView>();
+        private List<StatusView> _activeList;
 
         private int _activeIndex = -1;
 
@@ -21,42 +22,59 @@ namespace PixelCurio.AlteredTimeline
         public void Initialize()
         {
             foreach (ICharacter character in _characterManager.SelectableCharacters)
-            {
-                StatusView status = _statusFactory.Create();
-                status.PanelAlignment = StatusView.Alignment.Right;
-                status.Character = character;
-                status.SetName(character.Name);
-                status.transform.SetParent(_view.RightPlatesTransform, false);
+                AddCharacter(character, StatusView.Alignment.Right);
 
-                character.OnHealthChange += status.HealthChange;
-                character.OnManaChange += status.ManaChange;
-                character.TriggerStatRefresh();
+            foreach (ICharacter character in _characterManager.SelectableEnemies)
+                AddCharacter(character, StatusView.Alignment.Left);
 
+            _activeList = _rightStatuses;
+        }
+
+        private void AddCharacter(ICharacter character, StatusView.Alignment alignment)
+        {
+            StatusView status = _statusFactory.Create();
+            status.PanelAlignment = alignment;
+            status.Character = character;
+            status.SetName(character.Name);
+            status.transform.SetParent(alignment == StatusView.Alignment.Right ?
+                _view.RightPlatesTransform : _view.LeftPlatesTransform, false);
+
+            character.OnHealthChange += status.HealthChange;
+            character.OnManaChange += status.ManaChange;
+            character.TriggerStatRefresh();
+
+            if (alignment == StatusView.Alignment.Right)
                 _rightStatuses.Add(status);
-            }
+            else if (alignment == StatusView.Alignment.Left)
+                _leftStatuses.Add(status);
         }
 
         private void SelectNext()
         {
-            if (_activeIndex >= 0) SetSelected(_rightStatuses[_activeIndex], false);
+            if (_activeIndex >= 0) SetSelected(_activeList[_activeIndex], false);
 
-            _activeIndex = ++_activeIndex >= _rightStatuses.Count ? 0 : _activeIndex; //Otherwise, move on to next item.
+            _activeIndex = ++_activeIndex >= _activeList.Count ? 0 : _activeIndex; //Otherwise, move on to next item.
 
-            SetSelected(_rightStatuses[_activeIndex], true);
+            SetSelected(_activeList[_activeIndex], true);
         }
 
         private void SelectPrevious()
         {
-            if (_activeIndex >= 0) SetSelected(_rightStatuses[_activeIndex], false);
+            if (_activeIndex >= 0) SetSelected(_activeList[_activeIndex], false);
 
-            _activeIndex = --_activeIndex < 0 ? _rightStatuses.Count - 1 : _activeIndex;
+            _activeIndex = --_activeIndex < 0 ? _activeList.Count - 1 : _activeIndex;
 
-            SetSelected(_rightStatuses[_activeIndex], true);
+            SetSelected(_activeList[_activeIndex], true);
         }
 
         private void SelectOther()
         {
+            ClearSelection();
 
+            if (_activeList == _rightStatuses) _activeList = _leftStatuses;
+            else if (_activeList == _leftStatuses) _activeList = _rightStatuses;
+
+            SelectNext();
         }
 
         private void Confirm()
@@ -67,12 +85,17 @@ namespace PixelCurio.AlteredTimeline
         private void Back()
         {
             Deactivate();
-            if (_activeIndex >= 0) SetSelected(_rightStatuses[_activeIndex], false);
-            _activeIndex = -1;
+            ClearSelection();
             _commandsViewController.Activate();
         }
 
         private static void SetSelected(StatusView view, bool isSelected) => view.SetCursorVisibility(isSelected);
+
+        private void ClearSelection()
+        {
+            if (_activeIndex >= 0) SetSelected(_activeList[_activeIndex], false);
+            _activeIndex = -1;
+        }
 
         public void Activate(IAction action)
         {
