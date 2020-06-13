@@ -79,7 +79,8 @@ namespace PixelCurio.AlteredTimeline
 
         private void Confirm()
         {
-
+            _action.PayCost(_characterManager.ActiveCharacter);
+            _action.ApplyEffect(_activeList[_activeIndex].Character);
         }
 
         private void Back()

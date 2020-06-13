@@ -8,6 +8,8 @@ namespace PixelCurio.AlteredTimeline
         string Name { get; set; }
         int CurrentHealth { get; set; }
         int MaxHealth { get; set; }
+        int CurrentMana { get; set; }
+        int MaxMana { get; set; }
         List<IAction> Actions { get; }
         void ReceiveDamage(int damage);
         Action<float> OnHealthChange { get; set; }

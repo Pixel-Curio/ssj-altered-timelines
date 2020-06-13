@@ -7,6 +7,11 @@ namespace PixelCurio.AlteredTimeline
         public string Name { get; } = "Item";
         public int ManaCost { get; } = 0;
         public void ApplyEffect(ICharacter target) => target.ReceiveDamage(0);
+        public void PayCost(ICharacter source)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public List<IAction> SubActions { get; } = new List<IAction>();
     }
 }
