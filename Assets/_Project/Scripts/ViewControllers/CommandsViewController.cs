@@ -50,18 +50,15 @@ namespace PixelCurio.AlteredTimeline
             _ = DelayedSelect();
         }
 
-        //public void Tick()
-        //{
-        //    if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.RightArrow)) SelectCommand();
-        //    if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.LeftArrow)) BackCommand();
-        //    if (Input.GetKeyDown(KeyCode.DownArrow)) _activePanelView.SelectNext();
-        //    if (Input.GetKeyDown(KeyCode.UpArrow)) _activePanelView.SelectPrevious();
-        //}
-
         private void SelectCommand()
         {
             if (_activePanelView.GetActiveAction() == null) throw new WarningException("Select command was hit before an item has been selected.");
-            if (_activePanelView.GetActiveAction().ChildPanel == null) return; //TODO: Replace this with command action;
+            if (_activePanelView.GetActiveAction().ChildPanel == null)
+            {
+                Deactivate();
+                _statusesViewController.Activate(_activePanelView.GetActiveAction().Action);
+                return;
+            }
             _activePanelView = _activePanelView.GetActiveAction().ChildPanel;
             _activePanelView.SetPanelVisibility(true);
             _activePanelView.ParentPanel.ClearSelection();
@@ -94,7 +91,7 @@ namespace PixelCurio.AlteredTimeline
             return panelView;
         }
 
-        private void Activate()
+        public void Activate()
         {
             _inputManager.OnRight += SelectCommand;
             _inputManager.OnEnter += SelectCommand;

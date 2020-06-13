@@ -32,7 +32,7 @@ namespace PixelCurio.AlteredTimeline
         private void InstallCharacters()
         {
             #region Install Knight
-            Container.BindInterfacesAndSelfTo<Knight>().AsSingle();
+            Container.BindInterfacesAndSelfTo<Knight>().AsCached();
             Container.Bind<IAction>().To<Attack>().AsCached().WhenInjectedInto<Knight>();
             Container.Bind<IAction>().To<Defend>().AsCached().WhenInjectedInto<Knight>();
             Container.Bind<IAction>().To<Magic>().AsCached().WhenInjectedInto<Knight>();
