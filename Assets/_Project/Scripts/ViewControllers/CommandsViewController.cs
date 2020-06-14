@@ -22,6 +22,8 @@ namespace PixelCurio.AlteredTimeline
 
             _activePanelView = commandPanelView;
 
+            if(_characterManager.ActiveCharacter == null) return;
+
             //Register root actions
             foreach (IAction action in _characterManager.ActiveCharacter.Actions)
             {

@@ -12,6 +12,12 @@ namespace PixelCurio.AlteredTimeline
         public GameObject CommandViewPrefab;
         [Space(10)]
         public GameObject StatusViewPrefab;
+        [Space(10)]
+        public GameObject KnightPrefab;
+        public GameObject ThiefPrefab;
+        public GameObject RangerPrefab;
+        [Space(10)]
+        public GameObject SlimePrefab;
 
         public override void InstallBindings()
         {
@@ -34,6 +40,9 @@ namespace PixelCurio.AlteredTimeline
         {
             #region Install Knight
             Container.BindInterfacesAndSelfTo<Knight>().AsTransient();
+            Container.BindInterfacesAndSelfTo<CharacterView>()
+                .FromComponentInNewPrefab(KnightPrefab)
+                .WhenInjectedInto<Knight>();
             Container.Bind<IAction>().To<Attack>().AsCached().WhenInjectedInto<Knight>();
             Container.Bind<IAction>().To<Defend>().AsCached().WhenInjectedInto<Knight>();
             Container.Bind<IAction>().To<Magic>().AsCached().WhenInjectedInto<Knight>();
@@ -44,6 +53,9 @@ namespace PixelCurio.AlteredTimeline
         private void InstallEnemies()
         {
             Container.BindInterfacesAndSelfTo<Slime>().AsTransient();
+            Container.BindInterfacesAndSelfTo<CharacterView>()
+                .FromComponentInNewPrefab(SlimePrefab)
+                .WhenInjectedInto<Slime>();
         }
 
         private void InstallMagic()

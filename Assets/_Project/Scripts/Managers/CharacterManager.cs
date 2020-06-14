@@ -17,12 +17,12 @@ namespace PixelCurio.AlteredTimeline
 
         public void Initialize()
         {
-            SelectableCharacters.Add(_knight);
-            SelectableCharacters.Add(_knight2);
+            SelectableCharacters.Add(_knight.Initialize());
+            SelectableCharacters.Add(_knight2.Initialize());
             ActiveCharacter = _knight;
 
-            SelectableEnemies.Add(_slime);
-            SelectableEnemies.Add(_slime2);
+            SelectableEnemies.Add(_slime.Initialize());
+            SelectableEnemies.Add(_slime2.Initialize());
         }
     }
 }
