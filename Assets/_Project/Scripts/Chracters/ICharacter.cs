@@ -5,6 +5,7 @@ namespace PixelCurio.AlteredTimeline
 {
     public interface ICharacter
     {
+        CharacterView View { get; set; }
         string Name { get; set; }
         int CurrentHealth { get; set; }
         int MaxHealth { get; set; }

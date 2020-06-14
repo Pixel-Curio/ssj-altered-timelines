@@ -10,8 +10,9 @@ namespace PixelCurio.AlteredTimeline
         public GameObject CommandsViewPrefab;
         public GameObject CommandPanelViewPrefab;
         public GameObject CommandViewPrefab;
-        [Space(10)]
         public GameObject StatusViewPrefab;
+        [Space(10)]
+        public GameObject CursorViewPrefab;
         [Space(10)]
         public GameObject KnightPrefab;
         public GameObject ThiefPrefab;
@@ -71,6 +72,10 @@ namespace PixelCurio.AlteredTimeline
         }
         private void InstallViews()
         {
+            Container.BindInterfacesAndSelfTo<CursorView>()
+                .FromComponentInNewPrefab(CursorViewPrefab)
+                .UnderTransform(UiTransform).AsSingle();
+
             Container.BindInterfacesAndSelfTo<CommandsView>()
                 .FromComponentInNewPrefab(CommandsViewPrefab)
                 .UnderTransform(UiTransform).AsSingle();

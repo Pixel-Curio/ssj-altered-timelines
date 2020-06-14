@@ -10,6 +10,7 @@ namespace PixelCurio.AlteredTimeline
         [Inject] private readonly CharacterManager _characterManager;
         [Inject] private readonly InputManager _inputManager;
         [Inject] private readonly CommandsViewController _commandsViewController;
+        [Inject] private readonly CursorView _cursorView;
 
         private List<StatusView> _rightStatuses = new List<StatusView>();
         private List<StatusView> _leftStatuses = new List<StatusView>();
@@ -90,11 +91,17 @@ namespace PixelCurio.AlteredTimeline
             _commandsViewController.Activate();
         }
 
-        private static void SetSelected(StatusView view, bool isSelected) => view.SetCursorVisibility(isSelected);
+        private void SetSelected(StatusView view, bool isSelected)
+        {
+            view.SetCursorVisibility(isSelected);
+            _cursorView.Renderer.enabled = true;
+            _cursorView.transform.position = view.Character.View.IconTransform.position;
+        }
 
         private void ClearSelection()
         {
             if (_activeIndex >= 0) SetSelected(_activeList[_activeIndex], false);
+            _cursorView.Renderer.enabled = false;
             _activeIndex = -1;
         }
 

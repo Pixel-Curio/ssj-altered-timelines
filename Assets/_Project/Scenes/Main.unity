@@ -1563,6 +1563,7 @@ MonoBehaviour:
   CommandPanelViewPrefab: {fileID: 6946310572950883349, guid: df625ab4912ad804fbc6b2e757098d87, type: 3}
   CommandViewPrefab: {fileID: 4105615310175296965, guid: e418f89fec3b9a34e8be3d1456da1177, type: 3}
   StatusViewPrefab: {fileID: 6715945335156729648, guid: 923a1c537bb845b4f8a57e6f2921716a, type: 3}
+  CursorViewPrefab: {fileID: 8189752543623657153, guid: d50de9cebe3fcc943b391cae2a08ddf7, type: 3}
   KnightPrefab: {fileID: 4537857257180204964, guid: e4bd8952d2169f144a952651459b8d8f, type: 3}
   ThiefPrefab: {fileID: 4047639836344822777, guid: 22f0433bdc15d744e900099021e6e927, type: 3}
   RangerPrefab: {fileID: 271893430150142258, guid: ab11a6ad6e178f14d9c771ad6178c7c2, type: 3}
