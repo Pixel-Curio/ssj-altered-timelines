@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Cinemachine;
 using Zenject;
 
 namespace PixelCurio.AlteredTimeline
@@ -11,6 +12,8 @@ namespace PixelCurio.AlteredTimeline
         [Inject] private readonly InputManager _inputManager;
         [Inject] private readonly CommandsViewController _commandsViewController;
         [Inject] private readonly CursorView _cursorView;
+        [Inject(Id = "FollowCam")] private readonly CinemachineVirtualCamera _followCamera;
+        [Inject(Id = "BattlegroundCam")] private readonly CinemachineVirtualCamera _battlegroundCamera;
 
         private List<StatusView> _rightStatuses = new List<StatusView>();
         private List<StatusView> _leftStatuses = new List<StatusView>();
@@ -96,12 +99,16 @@ namespace PixelCurio.AlteredTimeline
             view.SetCursorVisibility(isSelected);
             _cursorView.Renderer.enabled = true;
             _cursorView.transform.position = view.Character.View.IconTransform.position;
+            _followCamera.LookAt = view.Character.View.IconTransform;
+            _followCamera.Follow = view.Character.View.IconTransform;
+            _battlegroundCamera.Priority = 0;
         }
 
         private void ClearSelection()
         {
             if (_activeIndex >= 0) SetSelected(_activeList[_activeIndex], false);
             _cursorView.Renderer.enabled = false;
+            _battlegroundCamera.Priority = 15;
             _activeIndex = -1;
         }
 
