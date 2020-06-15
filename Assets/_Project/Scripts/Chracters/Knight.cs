@@ -9,8 +9,9 @@ namespace PixelCurio.AlteredTimeline
     {
         [Inject] public List<IAction> Actions { get; set; }
         [Inject] public CharacterView View { get; set; }
-        [Inject] private List<SpawnPoint> _spawnPoints { get; set; }
+        [Inject] private List<SpawnPoint> _spawnPoints;
 
+        public CommandPanelView CommandPanelView { get; set; }
         public string Name { get; set; } = "Knight";
         public int CurrentHealth { get; set; } = 100;
         public int MaxHealth { get; set; } = 100;

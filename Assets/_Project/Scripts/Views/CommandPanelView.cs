@@ -45,7 +45,17 @@ namespace PixelCurio.AlteredTimeline
             _activeIndex = -1;
         }
 
-        public void SetPanelVisibility(bool isVisible) => RootTransform.gameObject.SetActive(isVisible);
+        public void SetPanelVisibility(bool isVisible)
+        {
+            RootTransform.gameObject.SetActive(isVisible);
+
+            if (isVisible) return;
+
+            for (int i = 0; i < _commands.Count; i++)
+            {
+                if (_commands[i].ChildPanel != null) _commands[i].ChildPanel.SetPanelVisibility(false);
+            }
+        }
 
         private static void SetSelected(CommandView view, bool isSelected) => view.Cursor.enabled = isSelected;
     }

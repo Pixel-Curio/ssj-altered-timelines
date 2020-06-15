@@ -12,7 +12,6 @@ namespace PixelCurio.AlteredTimeline
         {
             throw new System.NotImplementedException();
         }
-
         [Inject] public List<IAction> SubActions { get; } = new List<IAction>();
     }
 }

@@ -18,38 +18,49 @@ namespace PixelCurio.AlteredTimeline
 
         public void Initialize()
         {
-            CommandPanelView commandPanelView = CreatePanel();
+            //if (_characterManager.ActiveCharacter == null) return;
 
-            _activePanelView = commandPanelView;
-
-            if(_characterManager.ActiveCharacter == null) return;
-
-            //Register root actions
-            foreach (IAction action in _characterManager.ActiveCharacter.Actions)
+            foreach (ICharacter character in _characterManager.SelectableCharacters)
             {
-                CommandView commandView = _commandFactory.Create();
-                commandView.Name.text = action.Name;
-                commandView.Cursor.enabled = false;
-                commandView.Action = action;
-                commandPanelView.SetChildCommand(commandView);
+                CommandPanelView commandPanelView = CreatePanel();
+                character.CommandPanelView = commandPanelView;
 
-                //Register sub actions (eg magic, items, etc)
-                if (action.SubActions == null || action.SubActions.Count == 0) continue;
-
-                CommandPanelView subCommandPanel = CreatePanel(commandPanelView);
-                commandView.ChildPanel = subCommandPanel;
-
-                foreach (IAction subAction in action.SubActions)
+                //Register root actions
+                foreach (IAction action in character.Actions)
                 {
-                    CommandView subCommandView = _commandFactory.Create();
-                    subCommandView.Name.text = subAction.Name;
-                    subCommandView.Cursor.enabled = false;
-                    subCommandView.Action = subAction;
-                    subCommandPanel.SetChildCommand(subCommandView);
+                    CommandView commandView = _commandFactory.Create();
+                    commandView.Name.text = action.Name;
+                    commandView.Cursor.enabled = false;
+                    commandView.Action = action;
+                    commandPanelView.SetChildCommand(commandView);
+
+                    //Register sub actions (eg magic, items, etc)
+                    if (action.SubActions == null || action.SubActions.Count == 0) continue;
+
+                    CommandPanelView subCommandPanel = CreatePanel(commandPanelView);
+                    commandView.ChildPanel = subCommandPanel;
+
+                    foreach (IAction subAction in action.SubActions)
+                    {
+                        CommandView subCommandView = _commandFactory.Create();
+                        subCommandView.Name.text = subAction.Name;
+                        subCommandView.Cursor.enabled = false;
+                        subCommandView.Action = subAction;
+                        subCommandPanel.SetChildCommand(subCommandView);
+                    }
                 }
             }
 
+            SetActivePanel(_characterManager.ActiveCharacter.CommandPanelView);
+
             _ = DelayedSelect();
+        }
+
+        private void SetActivePanel(CommandPanelView newPanel)
+        {
+            if (_activePanelView != null) _activePanelView.SetPanelVisibility(false);
+            _activePanelView = newPanel;
+            _activePanelView.SetPanelVisibility(true);
         }
 
         private void SelectCommand()
@@ -84,11 +95,9 @@ namespace PixelCurio.AlteredTimeline
         {
             CommandPanelView panelView = _commandPanelFactory.Create();
             panelView.transform.SetParent(_view.CommandPlatesTransform, false);
-
-            if (parentPanel == null) return panelView;
-
-            panelView.ParentPanel = parentPanel;
             panelView.SetPanelVisibility(false);
+
+            if (parentPanel != null) panelView.ParentPanel = parentPanel;
 
             return panelView;
         }
