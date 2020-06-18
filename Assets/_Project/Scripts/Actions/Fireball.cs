@@ -8,6 +8,7 @@ namespace PixelCurio.AlteredTimeline
         public string Name { get; } = "Fireball";
         public int ManaCost { get; } = 10;
         public void ApplyEffect(ICharacter target) => target.ReceiveDamage(20);
+        public bool CanPayCost(ICharacter source) => source.CurrentMana >= ManaCost;
         public void PayCost(ICharacter source)
         {
             source.CurrentMana -= ManaCost;
