@@ -58,3 +58,14 @@ The following packages were added:
   com.unity.2d.tilemap@1.0.0
   com.unity.inputsystem@1.0.0-preview.3
   com.unity.render-pipelines.universal@7.1.6
+
+=== Thu Jun 18 20:08:37 2020
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.2d.animation from version 3.0.8 to 4.2.2
+  com.unity.2d.psdimporter from version 2.0.7 to 3.1.4
+  com.unity.2d.spriteshape from version 3.0.7 to 4.1.1
+  com.unity.inputsystem from version 1.0.0-preview.3 to 1.0.0

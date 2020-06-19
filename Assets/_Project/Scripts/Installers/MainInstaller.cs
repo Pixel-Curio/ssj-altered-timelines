@@ -69,6 +69,7 @@ namespace PixelCurio.AlteredTimeline
         {
             Container.BindInterfacesAndSelfTo<CommandsViewController>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<StatusesViewController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<NotificationViewController>().AsSingle().NonLazy();
         }
         private void InstallViews()
         {
