@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 using Zenject;
 
 namespace PixelCurio.AlteredTimeline
@@ -42,7 +43,8 @@ namespace PixelCurio.AlteredTimeline
                 _activeIndex = 0;
                 foreach (ICharacter enemy in SelectableEnemies)
                 {
-
+                    enemy.Actions[Random.Range(0, enemy.Actions.Count)]
+                        .ApplyEffect(enemy, SelectableCharacters[Random.Range(0, SelectableCharacters.Count)]);
                 }
             }
 
