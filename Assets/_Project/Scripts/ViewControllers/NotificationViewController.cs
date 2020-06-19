@@ -25,18 +25,23 @@ namespace PixelCurio.AlteredTimeline
         {
             if (Input.GetKeyUp(KeyCode.Space))
             {
-                if (_activeTask != null && !_activeTask.IsCompleted)
-                {
-                    _tokenSource.Cancel();
-                }
-
-                _tokenSource = new CancellationTokenSource();
-
-                _activeTask = DisplayMessage("Not enough mana!", _tokenSource.Token);
+                DisplayMessage("Not enough mana!");
             }
         }
 
-        public async Task DisplayMessage(string message, CancellationToken token)
+        public void DisplayMessage(string message)
+        {
+            if (_activeTask != null && !_activeTask.IsCompleted)
+            {
+                _tokenSource.Cancel();
+            }
+
+            _tokenSource = new CancellationTokenSource();
+
+            _activeTask = DisplayMessage(message, _tokenSource.Token);
+        }
+
+        private async Task DisplayMessage(string message, CancellationToken token)
         {
             _view.MiddlePanel.SetActive(true);
 

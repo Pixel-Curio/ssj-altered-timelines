@@ -7,6 +7,7 @@ namespace PixelCurio.AlteredTimeline
     public class StatusesViewController : IInitializable
     {
         [Inject] private readonly StatusesView _view;
+        [Inject] private readonly NotificationViewController _notificationViewController;
         [Inject] private readonly PlaceholderFactory<StatusView> _statusFactory;
         [Inject] private readonly CharacterManager _characterManager;
         [Inject] private readonly InputManager _inputManager;
@@ -83,7 +84,11 @@ namespace PixelCurio.AlteredTimeline
 
         private void Confirm()
         {
-            if (!_action.CanPayCost(_characterManager.ActiveCharacter)) return;
+            if (!_action.CanPayCost(_characterManager.ActiveCharacter))
+            {
+                _notificationViewController.DisplayMessage("Not enough mana!");
+                return;
+            }
 
             _action.PayCost(_characterManager.ActiveCharacter);
             _action.ApplyEffect(_activeList[_activeIndex].Character);
