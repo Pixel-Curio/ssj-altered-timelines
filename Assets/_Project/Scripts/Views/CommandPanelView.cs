@@ -23,6 +23,8 @@ namespace PixelCurio.AlteredTimeline
 
         public void SelectNext()
         {
+            if (_commands.Count <= 0) return;
+
             if (_activeIndex >= 0) SetSelected(_commands[_activeIndex], false);
 
             if (_activeIndex == -1 && _lastActiveIndex != -1) _activeIndex = _lastActiveIndex; //For returning to a panel, select the last action.
@@ -33,8 +35,11 @@ namespace PixelCurio.AlteredTimeline
 
         public void SelectPrevious()
         {
+            if (_commands.Count <= 0) return;
+
             if (_activeIndex >= 0) SetSelected(_commands[_activeIndex], false);
             _activeIndex = --_activeIndex < 0 ? _commands.Count - 1 : _activeIndex;
+
             SetSelected(_commands[_activeIndex], true);
         }
 
@@ -48,6 +53,8 @@ namespace PixelCurio.AlteredTimeline
         public void SetPanelVisibility(bool isVisible)
         {
             RootTransform.gameObject.SetActive(isVisible);
+
+            if (_activeIndex < 0) SelectNext();
 
             if (isVisible) return;
 

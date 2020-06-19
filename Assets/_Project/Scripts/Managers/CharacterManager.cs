@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using Zenject;
 
 namespace PixelCurio.AlteredTimeline
@@ -11,18 +12,32 @@ namespace PixelCurio.AlteredTimeline
         [Inject] private readonly Slime _slime;
         [Inject] private readonly Slime _slime2;
 
-        public ICharacter ActiveCharacter { get; set; }
+        private int _activeIndex = -1;
+
+        public ICharacter ActiveCharacter => _activeIndex < 0 ? null : TurnOrder[_activeIndex];
         public List<ICharacter> SelectableCharacters { get; set; } = new List<ICharacter>();
         public List<ICharacter> SelectableEnemies { get; set; } = new List<ICharacter>();
+        public List<ICharacter> TurnOrder { get; set; } = new List<ICharacter>();
 
         public void Initialize()
         {
             SelectableCharacters.Add(_knight.Initialize());
             SelectableCharacters.Add(_knight2.Initialize());
-            ActiveCharacter = _knight;
 
             SelectableEnemies.Add(_slime.Initialize());
             SelectableEnemies.Add(_slime2.Initialize());
+
+            TurnOrder.AddRange(SelectableCharacters);
+            //TurnOrder.AddRange(SelectableEnemies);
+
+            _activeIndex = 0;
+        }
+
+        public void SelectNext()
+        {
+            if (_activeIndex >= 0) ActiveCharacter.CommandPanelView.SetPanelVisibility(false);
+            _activeIndex = ++_activeIndex >= TurnOrder.Count ? 0 : _activeIndex;
+            ActiveCharacter.CommandPanelView.SetPanelVisibility(true);
         }
     }
 }

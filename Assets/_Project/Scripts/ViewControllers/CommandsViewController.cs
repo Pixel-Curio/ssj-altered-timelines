@@ -51,16 +51,7 @@ namespace PixelCurio.AlteredTimeline
                 }
             }
 
-            SetActivePanel(_characterManager.ActiveCharacter.CommandPanelView);
-
-            _ = DelayedSelect();
-        }
-
-        private void SetActivePanel(CommandPanelView newPanel)
-        {
-            if (_activePanelView != null) _activePanelView.SetPanelVisibility(false);
-            _activePanelView = newPanel;
-            _activePanelView.SetPanelVisibility(true);
+            Activate();
         }
 
         private void SelectCommand()
@@ -87,9 +78,9 @@ namespace PixelCurio.AlteredTimeline
             _activePanelView.SelectNext();
         }
 
-        private void NextCommand() => _activePanelView.SelectNext();
+        private void NextCommand() => _activePanelView?.SelectNext();
 
-        private void PreviousCommand() => _activePanelView.SelectPrevious();
+        private void PreviousCommand() => _activePanelView?.SelectPrevious();
 
         private CommandPanelView CreatePanel(CommandPanelView parentPanel = null)
         {
@@ -104,6 +95,10 @@ namespace PixelCurio.AlteredTimeline
 
         public void Activate()
         {
+            if (_activePanelView != null) _activePanelView.SetPanelVisibility(false);
+            _activePanelView = _characterManager.ActiveCharacter.CommandPanelView;
+            _activePanelView.SetPanelVisibility(true);
+
             _inputManager.OnRight += SelectCommand;
             _inputManager.OnEnter += SelectCommand;
             _inputManager.OnLeft += BackCommand;
@@ -120,13 +115,6 @@ namespace PixelCurio.AlteredTimeline
             _inputManager.OnBack -= BackCommand;
             _inputManager.OnDown -= NextCommand;
             _inputManager.OnUp -= PreviousCommand;
-        }
-
-        private async Task DelayedSelect()
-        {
-            await Task.Delay(500);
-            _activePanelView.SelectNext();
-            Activate();
         }
     }
 }
