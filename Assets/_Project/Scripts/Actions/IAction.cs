@@ -6,7 +6,7 @@ namespace PixelCurio.AlteredTimeline
     {
         string Name { get; }
         int ManaCost { get; }
-        void ApplyEffect(ICharacter target);
+        void ApplyEffect(ICharacter source, ICharacter target);
         void PayCost(ICharacter source);
         bool CanPayCost(ICharacter source);
         List<IAction> SubActions { get; }

@@ -36,7 +36,17 @@ namespace PixelCurio.AlteredTimeline
         public void SelectNext()
         {
             if (_activeIndex >= 0) ActiveCharacter.CommandPanelView.SetPanelVisibility(false);
-            _activeIndex = ++_activeIndex >= TurnOrder.Count ? 0 : _activeIndex;
+
+            if (++_activeIndex >= TurnOrder.Count)
+            {
+                _activeIndex = 0;
+                foreach (ICharacter enemy in SelectableEnemies)
+                {
+
+                }
+            }
+
+            //_activeIndex = ++_activeIndex >= TurnOrder.Count ? 0 : _activeIndex;
             ActiveCharacter.CommandPanelView.SetPanelVisibility(true);
         }
     }

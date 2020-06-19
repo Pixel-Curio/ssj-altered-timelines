@@ -57,6 +57,7 @@ namespace PixelCurio.AlteredTimeline
             Container.BindInterfacesAndSelfTo<CharacterView>()
                 .FromComponentInNewPrefab(SlimePrefab)
                 .WhenInjectedInto<Slime>();
+            Container.Bind<IAction>().To<Attack>().AsCached().WhenInjectedInto<Slime>();
         }
 
         private void InstallMagic()
